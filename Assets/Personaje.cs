@@ -9,6 +9,7 @@ public class Personaje : MonoBehaviour
     Rigidbody2D movFisicas;
     public bool seChoca = false;
     public float keys;
+    float tiempo = 0f;
 
     // Start is called before the first frame update
     void Start()
@@ -30,10 +31,17 @@ public class Personaje : MonoBehaviour
         Vector2 movimiento = new Vector2(movX * 3, movY * 3);
         movFisicas.velocity = movimiento;
 
-        if(seChoca)
+        if(seChoca && tiempo > 0)
         {
-            Debug.Log("Se choca");
+            // contar...
+            Vector2 parado = new Vector2(0, 0);
+            movFisicas.velocity = parado;
+            tiempo = tiempo - Time.fixedDeltaTime;
+        }
+        else if (seChoca && tiempo == 0)
+        {
             seChoca = false;
+            movFisicas.velocity = movimiento;
         }
     }
 
@@ -42,8 +50,8 @@ public class Personaje : MonoBehaviour
 
         if (collision.gameObject.tag == "Paredes")
         {
+            tiempo = 2f;
             seChoca = true;
-
         }
         else if (collision.gameObject.tag == "Llaves")
         {
@@ -66,6 +74,11 @@ public class Personaje : MonoBehaviour
             Debug.Log("Todo tuyo, no olvides pagar tus impuestos");
             Destroy(collision.gameObject);
             Destroy(gameObject);
+        }
+        else if (collision.gameObject.tag == "Trampa")
+        {
+            tiempo = 2f;
+            seChoca = true;
         }
 
     }

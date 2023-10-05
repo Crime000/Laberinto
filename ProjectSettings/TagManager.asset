@@ -8,6 +8,8 @@ TagManager:
   - Llaves
   - Puerta
   - Tesoro
+  - Trampa
+  - Moneda
   layers:
   - Default
   - TransparentFX
