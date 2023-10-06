@@ -977,6 +977,7 @@ MonoBehaviour:
   movY: 0
   seChoca: 0
   keys: 0
+  vidas: 3
 --- !u!212 &1681853283
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1521,6 +1522,10 @@ PrefabInstance:
     - target: {fileID: 3657346193270930520, guid: 8c2dc51bda9cf7b44a85ca511947c3fa, type: 3}
       propertyPath: m_Mass
       value: 0.9754143
+      objectReference: {fileID: 0}
+    - target: {fileID: 3657346193270930520, guid: 8c2dc51bda9cf7b44a85ca511947c3fa, type: 3}
+      propertyPath: m_BodyType
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3657346193270930520, guid: 8c2dc51bda9cf7b44a85ca511947c3fa, type: 3}
       propertyPath: m_Simulated

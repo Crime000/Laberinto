@@ -10,6 +10,7 @@ public class Personaje : MonoBehaviour
     public bool seChoca = false;
     public float keys;
     float tiempo = 0f;
+    public int vidas = 3;
 
     // Start is called before the first frame update
     void Start()
@@ -79,6 +80,8 @@ public class Personaje : MonoBehaviour
         {
             tiempo = 2f;
             seChoca = true;
+            vidas = vidas - 1;
+            Debug.Log("Te quedan: " + vidas);
         }
 
     }
