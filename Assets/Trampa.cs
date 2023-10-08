@@ -16,6 +16,6 @@ public class Trampa : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.Rotate(45 * Vector3.forward * Time.deltaTime);
+        transform.Rotate(85 * Vector3.forward * Time.deltaTime);
     }
 }

@@ -8,17 +8,31 @@ public class Personaje : MonoBehaviour
     public float movX, movY;
     private Rigidbody2D movFisicas;
     public bool seChoca = false;
-    public int keys;
-    float tiempo = 0f;
-    public int vidas = 3;
-    public int runas = 0;
     private bool mirandoDerecha = true;
+
+
+    public int keys;
+    public int vidas = 4;
+    public int perdidaVidas = 1;
+
+
+    float tiempo = 0f;
+    public GameManager gameManager;
+    
+    
+    private Animator animator;
+    public Sprite Muerto;
+    public Color azul;
+    public Color Base;
+    private SpriteRenderer personaje;
 
     // Start is called before the first frame update.......................................................................................................................................................
 
     void Start()
     {
         movFisicas = GetComponent<Rigidbody2D>();
+
+        animator = GetComponent<Animator>();
     }
 
     // Update is called once per frame.....................................................................................................................................................................
@@ -32,20 +46,43 @@ public class Personaje : MonoBehaviour
 
     void FixedUpdate()
     {
-        // Mover al jugador...
+        // Mover al jugador................................................................................................................................................................................
         Vector2 movimiento = new Vector2(movX * 3, movY * 3);
         movFisicas.velocity = movimiento;
 
+
+        //Animaciones de movimiento........................................................................................................................................................................
+        if (movX == 0 && movY == 0 && vidas > 0)
+        {
+            animator.SetBool("Walking", false);
+        }
+        else if(movX != 0 || movY != 0 && vidas > 0)
+        {
+            animator.SetBool("Walking", true);
+        }
+
         Orientacion();
         Chocarse(movimiento);
+        Salud();
     }
 
+    //Muerte del personaje.................................................................................................................................................................................
+    void Salud()
+    {
+        if(vidas == 0)
+        {
+            movFisicas.velocity = new Vector2(0, 0);
+            animator.SetBool("isDead", true);
+        }
+    }
+
+    // Cambiar la orientacion del personaje.................................................................................................................................................................
     void Orientacion()
     {
-        if(  (mirandoDerecha == true && movX < 0) || (mirandoDerecha == false && movX > 0))
+        if(  (mirandoDerecha == true && movX < 0 && vidas > 0) || (mirandoDerecha == false && movX > 0 && vidas > 0))
         {
             mirandoDerecha = !mirandoDerecha;
-            transform.localScale = new Vector2(-transform.localScale.x, transform.localScale.y);
+            transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
         }
     }
 
@@ -53,17 +90,24 @@ public class Personaje : MonoBehaviour
 
     void Chocarse(Vector2 movimiento)
     {
-        if (seChoca && tiempo > 0)
+        if (seChoca && tiempo > 0 && vidas > 0)
         {
             // contar...
             Vector2 parado = new Vector2(0, 0);
             movFisicas.velocity = parado;
+            personaje = GetComponent<SpriteRenderer>();
+            personaje.color = azul;
             tiempo = tiempo - Time.fixedDeltaTime;
         }
         else if (seChoca && tiempo == 0)
         {
             seChoca = false;
             movFisicas.velocity = movimiento;
+        }
+        else
+        {
+            personaje = GetComponent<SpriteRenderer>();
+            personaje.color = Base;
         }
     }
 
@@ -80,14 +124,14 @@ public class Personaje : MonoBehaviour
         else if (collision.gameObject.tag == "Llaves")
         {
             keys = keys + 1;
-            Debug.Log("Llaves: " + keys);
             Destroy(collision.gameObject);
+            gameManager.LlavesTotales(keys);
         }
         else if (collision.gameObject.tag == "Puerta" && keys >= 1)
         {
             keys = keys - 1;
-            Debug.Log("Llaves: " + keys);
             Destroy(collision.gameObject);
+            gameManager.LlavesTotales(keys);
         }
         else if (collision.gameObject.tag == "Puerta" && keys < 1)
         {
@@ -103,14 +147,15 @@ public class Personaje : MonoBehaviour
         {
             tiempo = 2f;
             seChoca = true;
-            vidas = vidas - 1;
-            Debug.Log("Te quedan: " + vidas);
+            vidas -= 1;
+            gameManager.RestarVidas(perdidaVidas);
         }
-        else if (collision.gameObject.tag == "Moneda")
+        else if (collision.gameObject.tag == "Enemigo")
         {
-            runas = runas + 1;
-            Debug.Log("Runas: " + runas);
-            Destroy(collision.gameObject);
+            tiempo = 2f;
+            seChoca = true;
+            vidas -= 1;
+            gameManager.RestarVidas(perdidaVidas);
         }
 
     }
