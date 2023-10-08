@@ -6,33 +6,54 @@ public class Personaje : MonoBehaviour
 {
 
     public float movX, movY;
-    Rigidbody2D movFisicas;
+    private Rigidbody2D movFisicas;
     public bool seChoca = false;
-    public float keys;
+    public int keys;
     float tiempo = 0f;
     public int vidas = 3;
+    public int runas = 0;
+    private bool mirandoDerecha = true;
 
-    // Start is called before the first frame update
+    // Start is called before the first frame update.......................................................................................................................................................
+
     void Start()
     {
         movFisicas = GetComponent<Rigidbody2D>();
-
-        movFisicas.AddForce(Vector2.up * 1, ForceMode2D.Impulse);
     }
 
-    // Update is called once per frame
+    // Update is called once per frame.....................................................................................................................................................................
+
     void Update()
     {
+        // Declarar movimiento del jugador...
         movX = Input.GetAxis("Horizontal");
         movY = Input.GetAxis("Vertical");
     }
 
     void FixedUpdate()
     {
+        // Mover al jugador...
         Vector2 movimiento = new Vector2(movX * 3, movY * 3);
         movFisicas.velocity = movimiento;
 
-        if(seChoca && tiempo > 0)
+        Orientacion();
+        Chocarse(movimiento);
+    }
+
+    void Orientacion()
+    {
+        if(  (mirandoDerecha == true && movX < 0) || (mirandoDerecha == false && movX > 0))
+        {
+            mirandoDerecha = !mirandoDerecha;
+            transform.localScale = new Vector2(-transform.localScale.x, transform.localScale.y);
+        }
+    }
+
+    // Cuando se Choca.......................................................................................................................................................................................
+
+    void Chocarse(Vector2 movimiento)
+    {
+        if (seChoca && tiempo > 0)
         {
             // contar...
             Vector2 parado = new Vector2(0, 0);
@@ -45,6 +66,8 @@ public class Personaje : MonoBehaviour
             movFisicas.velocity = movimiento;
         }
     }
+
+    // Colisiones.............................................................................................................................................................................................
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -83,6 +106,13 @@ public class Personaje : MonoBehaviour
             vidas = vidas - 1;
             Debug.Log("Te quedan: " + vidas);
         }
+        else if (collision.gameObject.tag == "Moneda")
+        {
+            runas = runas + 1;
+            Debug.Log("Runas: " + runas);
+            Destroy(collision.gameObject);
+        }
 
     }
+
 }

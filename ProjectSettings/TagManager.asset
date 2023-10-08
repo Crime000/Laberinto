@@ -10,6 +10,8 @@ TagManager:
   - Tesoro
   - Trampa
   - Moneda
+  - Portal
+  - Jugador
   layers:
   - Default
   - TransparentFX
@@ -44,6 +46,12 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Fondo
+    uniqueID: 1042692959
+    locked: 0
+  - name: Objetos
+    uniqueID: 269558847
+    locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
