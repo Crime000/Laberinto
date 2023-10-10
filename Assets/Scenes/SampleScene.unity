@@ -21184,7 +21184,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Llaves: {fileID: 995906544}
-  Derrotado: {fileID: 612226939}
+  derrotado: {fileID: 0}
   circuloRunas: {fileID: 267632232}
   Vida: {fileID: 398694347}
   Vida3: {fileID: -453926951, guid: 9515cf5dee08cf54d845cdcb7ba4a7e2, type: 3}
@@ -23065,7 +23065,7 @@ Light:
   m_Type: 2
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 2
+  m_Intensity: 0
   m_Range: 100
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
